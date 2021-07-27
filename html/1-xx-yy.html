@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>1-x*x-y*y</title>
+    <style>
+        body {font: 10pt arial;}
+    </style>
+    <script type="text/javascript" src="../lib/vis-graph3d/standalone/umd/vis-graph3d.min.js"></script>
+
+
+
+
+
+    <script type="text/javascript">
+        var data = null;
+        var graph = null;
+
+        function fall(x, y) {
+            return 1 - x*x - y*y;
+        }
+
+        // Called when the Visualization API is loaded.
+        function drawVisualization() {
+            var options = {
+                width:  '650px',
+                height: '700px',
+                style: 'surface',
+                showPerspective: true,
+                showGrid: true,
+                showShadow: false,
+                keepAspectRatio: true,
+                verticalRatio: 1.0,
+
+                gridColor: '#7d7d7d',
+                ctrlToZoom: true,
+                axisFontSize: 24,
+                cameraPosition: {
+                        horizontal: -0.35,
+                        vertical: 0.22,
+                        distance: 1.8,
+                    },
+            };
+            var steps = 10; // number of datapoints will be steps*steps
+            var axisMin = -0.5;
+            var axisMax = 0.5;
+
+
+            data = new vis.DataSet();
+            var counter = 0;
+            var axisStep = axisMax / steps;
+            for (var x = axisMin; x < axisMax; x+=axisStep) {
+                for (var y = axisMin; y < axisMax; y+=axisStep) {
+                    var z = fall(x,y);
+                    data.add({id:counter++,x:x,y:y,z:z,style:z});
+                }
+            }
+            var container = document.getElementById('mygraph');
+            graph = new vis.Graph3d(container, data, options);
+        }
+    </script>
+
+
+
+
+
+</head>
+<body onload="drawVisualization();">
+<div id="mygraph"></div>
+<div id="info"></div>
+</body>
+</html>

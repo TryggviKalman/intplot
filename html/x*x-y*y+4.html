@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>x*x-y*y+4</title>
+    <style>
+        body {font: 10pt arial;}
+    </style>
+    <script type="text/javascript" src="../lib/vis-graph3d/standalone/umd/vis-graph3d.min.js"></script>
+
+
+
+
+
+    <script type="text/javascript">
+        var data1 = null;
+        var data2 = null;
+        var data3 = null;
+        var graph = null;
+
+        function fall(x, y) {
+            return x*x-y*y+4;
+        }
+
+        function drawVisualization() {
+            // Saddle
+            var options1 = {
+                width:  '650px',
+                height: '700px',
+                style: 'grid',
+                showPerspective: true,
+                showGrid: true,
+                showShadow: false,
+                keepAspectRatio: true,
+                verticalRatio: 0.6,
+
+                gridColor: '#7d7d7d',
+                ctrlToZoom: true,
+                axisFontSize: 24,
+                cameraPosition: {
+                        horizontal: 0.9,
+                        vertical: 0.2,
+                        distance: 1.8,
+                    },
+                colormap: {
+                    hue: {
+                        start: 290,
+                        end: 0,
+                        colorStops: 30,
+                        saturation: 100,
+                        brightness: 100,
+                    }
+                }
+            };
+            var steps = 10; // number of datapoints will be steps*steps
+            var axisMin = -2;
+            var axisMax = 2;
+
+
+            data1 = new vis.DataSet();
+            var counter = 0;
+            var axisStep = axisMax / steps;
+            for (var x = axisMin; x < axisMax; x+=axisStep) {
+                for (var y = axisMin; y < axisMax; y+=axisStep) {
+                    var z = fall(x,y);
+                    data1.add({id:counter++,x:x,y:y,z:z,style:z});
+                }
+            }
+
+
+            // =========================================================
+            // Shadow Circle 
+            var options2 = {
+                width:  '650px',
+                height: '700px',
+                style: 'line',
+                showPerspective: true,
+                showGrid: true,
+                showShadow: false,
+                keepAspectRatio: true,
+                verticalRatio: 0.6,
+
+                gridColor: '#7d7d7d',
+                ctrlToZoom: true,
+                axisFontSize: 24,
+                cameraPosition: {
+                        horizontal: 0.9,
+                        vertical: 0.2,
+                        distance: 1.8,
+                    },
+                //dataColor: "black"
+                };
+
+            data2 = new vis.DataSet();
+            for (var t = 0; t < 6.28; t+=0.1) {
+                var z = 0;
+                data2.add({id:counter++,x:Math.cos(t),y:Math.sin(t), z:z, style:{"stroke":"black", "fill": "black"}});
+            }
+
+            // =========================================================
+            // Saddle Circle
+            var options3 = {
+                width:  '650px',
+                height: '700px',
+                style: 'line',
+                showPerspective: true,
+                showGrid: true,
+                showShadow: false,
+                keepAspectRatio: true,
+                verticalRatio: 0.6,
+
+                gridColor: '#7d7d7d',
+                ctrlToZoom: true,
+                axisFontSize: 24,
+                cameraPosition: {
+                        horizontal: 0.9,
+                        vertical: 0.2,
+                        distance: 1.8,
+                    },
+                dataColor: "black"
+            };
+
+            data3 = new vis.DataSet();
+            for (var t = 0; t < 6.28; t+=0.1) {
+                var x = Math.cos(t)
+                var y = Math.sin(t)
+                var z = fall(x,y);
+                data1.add({id:counter++,x:x,y:y,z:z});
+            }
+
+
+
+            // =========================================================
+            var container = document.getElementById('mygraph');
+            //graph = new vis.Graph3d(container, data1, options1);
+            graph2 = new vis.Graph3d(container, data2, options2);
+            //graph3 = new vis.Graph3d(container, data3, options3);
+        }
+    </script>
+
+
+
+
+
+</head>
+<body onload="drawVisualization();">
+<div id="mygraph"></div>
+<div id="info"></div>
+</body>
+</html>
